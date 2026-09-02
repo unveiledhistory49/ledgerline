@@ -1,0 +1,33 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test-lint-typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -e ".[dev,test]"
+
+      # Explicit make-equivalent steps (cf. Makefile targets test/lint/typecheck).
+      # Each step fails loudly (default set -e behaviour of run steps).
+      - name: Run tests (make test)
+        run: python -m pytest tests/ -q
+
+      - name: Ruff lint (make lint)
+        run: ruff check src tests scripts
+
+      - name: Ruff format check (make lint)
+        run: ruff format --check src tests scripts
+
+      - name: Typecheck (make typecheck)
+        run: mypy src/ledgerline

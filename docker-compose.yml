@@ -1,0 +1,21 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      LEDGERLINE_DATABASE_URL: sqlite:///./data/ledgerline.db
+    volumes:
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=4)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+# To switch to Postgres, add a `db: image: postgres:16 ...` service, add a
+# driver (e.g. `psycopg2-binary`) to pyproject dependencies, and change the URL:
+#   environment:
+#     LEDGERLINE_DATABASE_URL: postgresql+psycopg2://ledgerline:ledgerline@db:5432/ledgerline
+# No code changes needed (SQLAlchemy engine is URL-driven).

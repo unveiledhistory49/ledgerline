@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+venv/
+.env/
+
+# SQLite
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Test / lint caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Runtime data (docker-compose sqlite volume)
+data/
+
+# Tooling
+.pre-commit-cache/
