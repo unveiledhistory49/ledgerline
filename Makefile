@@ -1,4 +1,4 @@
-.PHONY: install dev test lint typecheck fmt serve seed clean e2e
+.PHONY: install dev test lint typecheck fmt serve seed clean e2e lock audit
 
 install:
 	pip install -e ".[dev,test]"
@@ -31,6 +31,13 @@ seed:
 
 e2e:
 	bash scripts/e2e.sh
+
+lock:
+	pip-compile --output-file=requirements.lock pyproject.toml
+	pip-compile --output-file=requirements-dev.lock --extra=dev --extra=test pyproject.toml
+
+audit:
+	pip-audit -r requirements.lock --desc
 
 clean:
 	rm -rf .pytest_cache .mypy_cache .ruff_cache dist build *.egg-info

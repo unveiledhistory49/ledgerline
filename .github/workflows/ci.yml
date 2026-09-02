@@ -31,3 +31,6 @@ jobs:
 
       - name: Typecheck (make typecheck)
         run: mypy src/ledgerline
+
+      - name: Dependency audit
+        run: pip install pip-audit && pip-audit -r requirements.lock --desc
